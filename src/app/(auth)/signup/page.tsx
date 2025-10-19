@@ -1,13 +1,14 @@
-"use client"
-
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { AuthFormField } from "@/features/auth/components/AuthFormField";
 import { AuthDivider } from "@/features/auth/components/AuthDivider";
 import { AuthGoogle } from "@/features/auth/components/AuthGoogle";
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
-    <AuthLayout title="Welcome to Note" subtitle="Please log in to continue">
+    <AuthLayout
+      title="Create Your Account"
+      subtitle="Sign up to start organizing your notes and boost your productivity."
+    >
       <form className="w-full text-left space-y-4">
         <AuthFormField
           id="email"
@@ -25,10 +26,9 @@ export default function LoginPage() {
         />
 
         <div className="flex items-center gap-x-2">
+          <img src="/assets/images/icon-info.svg" alt="" className="h-4"/>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            <a href="/forgot" className="hover:underline">
-              Forgot Password
-            </a>
+            At least 8 characters
           </p>
         </div>
 
@@ -36,24 +36,24 @@ export default function LoginPage() {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
         >
-          Log In
+          Sign up
         </button>
       </form>
 
       <AuthDivider />
 
-      <AuthGoogle buttonText="Login with Google"></AuthGoogle>
+      <AuthGoogle buttonText="Sign up with Google"></AuthGoogle>
 
       <AuthDivider />
 
       <div className="text-sm text-gray-600 dark:text-gray-400">
         <p>
-          No account yet?{" "}
+          Already have an account?{" "}
           <a
-            href="/signup"
+            href="/login"
             className="text-blue-600 hover:underline dark:text-blue-400"
           >
-            Sign Up
+            login
           </a>
         </p>
       </div>
