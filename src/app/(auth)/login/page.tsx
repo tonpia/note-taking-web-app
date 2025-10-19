@@ -1,11 +1,22 @@
-"use client"
+"use client";
+
+import { useRouter } from "next/navigation";
 
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { AuthFormField } from "@/features/auth/components/AuthFormField";
 import { AuthDivider } from "@/features/auth/components/AuthDivider";
 import { AuthGoogle } from "@/features/auth/components/AuthGoogle";
+import { on } from "events";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // ... you can validate or call API here later
+    router.push("/notes");
+  };
+
   return (
     <AuthLayout title="Welcome to Note" subtitle="Please log in to continue">
       <form className="w-full text-left space-y-4">
@@ -34,6 +45,7 @@ export default function LoginPage() {
 
         <button
           type="submit"
+          onClick={handleSubmit}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition"
         >
           Log In

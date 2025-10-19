@@ -1,6 +1,7 @@
 // src/features/auth/components/AuthLayout.tsx
 import { ReactNode } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Image from "next/image";
 
 interface AuthLayoutProps {
   title: string;
@@ -11,18 +12,25 @@ interface AuthLayoutProps {
 export function AuthLayout({ title, subtitle, children }: AuthLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-neutral-700 transition-colors">
-      {/* <ThemeToggle /> */}
+      <ThemeToggle />
       <div className="bg-white dark:bg-neutral-950 rounded-2xl shadow-lg p-10 w-full max-w-sm flex flex-col items-center text-center space-y-4">
         {/* App Logo */}
-        <img
+
+        <Image
           src="/assets/images/light-logo.svg"
-          alt="Note Logo"
-          className="w-20 block dark:hidden"
+          alt="Light Mode Logo"
+          width={80}
+          height={40}
+          className="dark:hidden"
+          priority
         />
-        <img
+        <Image
           src="/assets/images/dark-logo.svg"
           alt="Dark Mode Logo"
-          className="w-20 hidden dark:block"
+          width={80}
+          height={40}
+          className="hidden dark:block"
+          priority
         />
         {/* Title + Subtitle */}
         <div>
