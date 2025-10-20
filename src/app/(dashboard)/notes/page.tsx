@@ -24,8 +24,8 @@ export default function NotesPage() {
         {notes.length === 0 ? (
           <div className="rounded-md bg-neutral-100 ">
             <p className="text-gray-500 text-center mt-10">
-              You don't have any notes yet. Start a new note to capture your
-              thoughts and ideas.
+              {`You don't have any notes yet. Start a new note to capture your
+              thoughts and ideas.`}
             </p>
           </div>
         ) : (

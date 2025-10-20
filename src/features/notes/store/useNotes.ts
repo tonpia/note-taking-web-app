@@ -8,14 +8,22 @@ interface NoteState {
   fetchNotes: () => Promise<void>;
 }
 
+interface NoteNoId {
+  title: string;
+  tags: string[];
+  content: string;
+  lastEdited: string;
+  isArchived: boolean;
+}
+
 export const useNotes = create<NoteState>((set) => ({
   notes: [],
   fetchNotes: async () => {
     const res = await fetch("/api/notes");
     const data = await res.json();
     
-    const notesWithId = data.notes.map((note: any) => ({
-      id: note.id ?? uuidv4(),
+    const notesWithId = data.notes.map((note: NoteNoId) => ({
+      id: uuidv4(),
       ...note,
     }));
 
