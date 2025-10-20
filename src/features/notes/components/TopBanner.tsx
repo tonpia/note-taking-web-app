@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/ThemeToggle";
 import Image from "next/image";
 
 export default function TopBanner() {
@@ -19,6 +20,7 @@ export default function TopBanner() {
         className="hidden dark:block"
         priority
       />
+      <ThemeToggle/>
     </header>
   );
 }

@@ -21,8 +21,8 @@ export default function BottomNav() {
         />
         <NavButton
           src="/assets/images/icon-archive.svg"
-          alt="New Note"
-          label="New Note"
+          alt="Archived"
+          label="Archived"
           href="/notes/archived"
         />
         <NavButton

@@ -1,5 +1,6 @@
 // store/useNotes.ts
 import { create } from "zustand";
+import { v4 as uuidv4 } from "uuid";
 import type Note from "@/features/notes/types/Note";
 
 interface NoteState {
@@ -12,6 +13,12 @@ export const useNotes = create<NoteState>((set) => ({
   fetchNotes: async () => {
     const res = await fetch("/api/notes");
     const data = await res.json();
-    set({ notes: data.notes });
+    
+    const notesWithId = data.notes.map((note: any) => ({
+      id: note.id ?? uuidv4(),
+      ...note,
+    }));
+
+    set({ notes: notesWithId });
   },
 }));
