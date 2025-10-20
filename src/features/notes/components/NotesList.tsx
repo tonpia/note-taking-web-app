@@ -21,22 +21,25 @@ export default function NotesList({ notes }: NotesListProps) {
           >
             <h2 className="text-lg font-medium mb-1">{note.title}</h2>
             <div className="flex flex-wrap gap-2 mb-2">
-              {note.tags.map((tag, tagIndex) => (
-                <span
-                  key={tagIndex}
-                  className="text-xs bg-gray-200 dark:bg-gray-700 
+              {Array.isArray(note.tags) &&
+                note.tags.map((tag, tagIndex) => (
+                  <span
+                    key={tagIndex}
+                    className="text-xs bg-gray-200 dark:bg-gray-700 
                            text-gray-800 dark:text-gray-200 px-2 py-1 rounded"
-                >
-                  {tag}
-                </span>
-              ))}
+                  >
+                    {tag}
+                  </span>
+                ))}
             </div>
             <p className="text-sm text-gray-500">
-              {new Date(note.lastEdited).toLocaleDateString(undefined, {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              {note.lastEdited
+                ? new Date(note.lastEdited).toLocaleDateString(undefined, {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "—"}
             </p>
           </Link>
         </li>
