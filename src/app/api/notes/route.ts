@@ -33,5 +33,5 @@ export async function POST(request: Request) {
   const notes = await readNotes();
   notes.push(newNote);
   await writeNotes(notes);
-  return NextResponse.json({ notes: newNote }, { status: 201 });
+  return NextResponse.json({ note: newNote }, { status: 201 });
 }

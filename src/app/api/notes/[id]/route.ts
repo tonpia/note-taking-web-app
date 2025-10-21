@@ -5,7 +5,6 @@ import Note from "@/features/notes/types/Note";
 
 const filePath = path.join(process.cwd(), "data", "notes.json");
 
-
 async function readNotes() {
   try {
     const data = await fs.readFile(filePath, "utf8");
@@ -16,7 +15,22 @@ async function readNotes() {
 }
 
 async function writeNotes(notes: Note[]) {
-  await fs.writeFile(filePath, JSON.stringify(notes, null, 2), "utf8");
+  try {
+    await fs.writeFile(filePath, JSON.stringify(notes, null, 2), "utf8");
+  } catch (error) {
+    console.error("Failed to write notes:", error);
+    throw new Error("Failed to write notes data");
+  }
+}
+
+export async function GET({ params }: { params: { id: string } }) {
+  const notes = await readNotes();
+  const { id } = params;
+  const note = notes.find((n: Note) => n.id === id);
+  if (!note) {
+    return NextResponse.json({ error: "Note not found" }, { status: 404 });
+  }
+  return NextResponse.json({ note });
 }
 
 export async function PUT(

@@ -3,33 +3,15 @@
 
 import { create } from "zustand";
 import type Note from "@/features/notes/types/Note";
+import { notesService } from "../services/notesService";
 
 interface NoteState {
   notes: Note[];
-  fetchNotes: () => Promise<void>;
+  fetchNotes: () => Promise<Note[]>;
+  fetchNote: (id: string) => Promise<Note>;
   addNote: (newNote: Omit<Note, "id">) => Promise<Note>;
   editNote: (id: string, updatedData: Partial<Note>) => Promise<void>;
   deleteNote: (id: string) => Promise<void>;
-}
-
-interface NoteNoId {
-  title: string;
-  tags: string[];
-  content: string;
-  lastEdited: string;
-  isArchived: boolean;
-}
-
-async function handleJson<T>(
-  input: RequestInfo,
-  init?: RequestInit
-): Promise<T> {
-  const res = await fetch(input, init);
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Request failed: ${res.status} - ${text}`);
-  }
-  return res.json();
 }
 
 export const useNotes = create<NoteState>((set, get) => ({
@@ -37,39 +19,32 @@ export const useNotes = create<NoteState>((set, get) => ({
 
   // --- FETCH ALL NOTES --- //
   fetchNotes: async () => {
-    try {
-      const data = await handleJson<{ notes: (Note & Partial<NoteNoId>)[] }>(
-        "/api/notes"
-      );
-      // Expect API to provide IDs already
-      set({ notes: data.notes });
-    } catch (error) {
-      console.error("Failed to fetch notes:", error);
-      set({ notes: [] });
+    const prevNotes = get().notes;
+    const newNotes = await notesService.getAll();
+    if (JSON.stringify(prevNotes) !== JSON.stringify(newNotes)) {
+      set({ notes: newNotes });
     }
+    return newNotes;
+  },
+
+  // --- FETCH ONE NOTE --- //
+  fetchNote: async (id) => {
+    const note = await notesService.getOne(id);
+    return note;
   },
 
   // --- ADD NOTE --- //
   addNote: async (newNote) => {
-    try {
-      const created = await handleJson<Note>("/api/notes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newNote),
-      }); // Optimistic update (append to existing)
-      set({ notes: [...get().notes, created] });
-
-      return created;
-    } catch (error) {
-      console.error("Failed to add note:", error);
-      throw error;
-    }
+    const created = await notesService.create(newNote as Note);
+    set({ notes: [...get().notes, created] });
+    return created;
   },
 
   // --- EDIT NOTE --- //
   editNote: async (id, updatedData) => {
-    // Optimistic update first
     const prevNotes = get().notes;
+
+    // Optimistic update first
     set({
       notes: prevNotes.map((note) =>
         note.id === id
@@ -79,14 +54,9 @@ export const useNotes = create<NoteState>((set, get) => ({
     });
 
     try {
-      await handleJson(`/api/notes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
-      });
+      await notesService.update(id, updatedData);
     } catch (error) {
       console.error("Failed to edit note:", error);
-      // Roll back on failure
       set({ notes: prevNotes });
     }
   },
@@ -94,14 +64,14 @@ export const useNotes = create<NoteState>((set, get) => ({
   // --- DELETE NOTE --- //
   deleteNote: async (id) => {
     const prevNotes = get().notes;
+
     // Optimistic remove
     set({ notes: prevNotes.filter((n) => n.id !== id) });
 
     try {
-      await handleJson(`/api/notes/${id}`, { method: "DELETE" });
+      await notesService.delete(id);
     } catch (error) {
       console.error("Failed to delete note:", error);
-      // Rollback if delete fails
       set({ notes: prevNotes });
     }
   },

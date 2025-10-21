@@ -2,11 +2,23 @@ import type Note from "../types/Note";
 
 const API_URL = "/api/notes";
 
+async function handleResponse<T>(res: Response): Promise<T> {
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Request failed (${res.status}): ${errorText}`);
+  }
+  return res.json();
+}
+
 export const notesService = {
   async getAll(): Promise<Note[]> {
     const res = await fetch(API_URL);
-    const data = await res.json();
-    return data.notes;
+    return handleResponse<{ notes: Note[] }>(res).then(data => data.notes);
+  },
+
+  async getOne(id: string): Promise<Note> {
+    const res = await fetch(`${API_URL}/${id}`, { cache: "no-store" });
+    return handleResponse<{ note: Note }>(res).then(data => data.note);
   },
 
   async create(note: Note): Promise<Note> {
@@ -15,8 +27,7 @@ export const notesService = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(note),
     });
-    const data = await res.json();
-    return data.note;
+    return handleResponse<{ note: Note }>(res).then(data => data.note);
   },
 
   async update(id: string, updates: Partial<Note>): Promise<Note> {
@@ -25,11 +36,12 @@ export const notesService = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updates),
     });
-    const data = await res.json();
-    return data.note;
+    return handleResponse<{ note: Note }>(res).then((data) => data.note);
   },
 
-  async delete(id: string): Promise<void> {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  async delete(id: string): Promise<boolean> {
+    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to delete note");
+    return true;
   },
 };
