@@ -46,8 +46,8 @@ export default function NotesPage() {
         <h1 className="text-2xl font-semibold mb-4">All Notes</h1>
         <div className="rounded-md bg-neutral-100 dark:bg-neutral-800">
           <p className="text-center mt-10 text-gray-500 dark:text-white">
-            You don't have any notes yet. Start a new note to capture your
-            thoughts and ideas.
+            {`You don't have any notes yet. Start a new note to capture your
+            thoughts and ideas.`}
           </p>
         </div>
 

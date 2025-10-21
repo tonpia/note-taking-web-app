@@ -57,7 +57,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const id = params.id;
-  let notes = await readNotes();
+  const notes = await readNotes();
   const filtered = notes.filter((n: Note) => n.id !== id);
 
   if (filtered.length === notes.length) {
