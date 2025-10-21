@@ -2,6 +2,7 @@ import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import { AuthFormField } from "@/features/auth/components/AuthFormField";
 import { AuthDivider } from "@/features/auth/components/AuthDivider";
 import { AuthGoogle } from "@/features/auth/components/AuthGoogle";
+import Image from "next/image";
 
 export default function SignupPage() {
   return (
@@ -26,7 +27,7 @@ export default function SignupPage() {
         />
 
         <div className="flex items-center gap-x-2">
-          <img src="/assets/images/icon-info.svg" alt="" className="h-4"/>
+          <Image src="/assets/images/icon-info.svg" alt="" className="h-4"/>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             At least 8 characters
           </p>

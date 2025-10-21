@@ -23,13 +23,18 @@ async function writeNotes(notes: Note[]) {
   }
 }
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   const notes = await readNotes();
   const { id } = params;
   const note = notes.find((n: Note) => n.id === id);
+
   if (!note) {
     return NextResponse.json({ error: "Note not found" }, { status: 404 });
   }
+
   return NextResponse.json({ note });
 }
 
