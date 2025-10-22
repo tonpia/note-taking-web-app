@@ -40,9 +40,17 @@ export default function NotePage() {
   });
 
   if (isLoading)
-    return <p className="text-gray-500 text-center mt-10">Loading note...</p>;
+    return (
+      <p className="flex-grow text-gray-500 text-center mt-10">
+        Loading note...
+      </p>
+    );
   if (!note)
-    return <p className="text-gray-500 text-center mt-10">Note not found.</p>;
+    return (
+      <p className="flex-grow text-gray-500 text-center mt-10">
+        Note not found.
+      </p>
+    );
 
   return (
     <article className="p-6">

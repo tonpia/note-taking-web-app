@@ -1,12 +1,7 @@
-import { NextResponse } from "next/server";
-// import data from "@/../public/assets/data/data.json";
+import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import Note from "@/features/notes/types/Note";
-
-// export async function GET() {
-//   return NextResponse.json(data);
-// }
 
 const filePath = path.join(process.cwd(), "data", "notes.json");
 
@@ -28,7 +23,7 @@ export async function GET() {
   return NextResponse.json({ notes });
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const newNote = await request.json();
   const notes = await readNotes();
   notes.push(newNote);

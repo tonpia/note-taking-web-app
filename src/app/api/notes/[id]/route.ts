@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import Note from "@/features/notes/types/Note";
@@ -24,7 +24,7 @@ async function writeNotes(notes: Note[]) {
 }
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const notes = await readNotes();
@@ -38,10 +38,7 @@ export async function GET(
   return NextResponse.json({ note });
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id;
   const updatednote = await req.json();
   const notes = await readNotes();
@@ -58,7 +55,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const id = params.id;
