@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
+import HomeIcon from "@/../public/assets/images/icon-home.svg";
+
 interface NavButtonProps {
   src: string;
   alt: string;
@@ -28,12 +30,16 @@ export default function NavButton({ src, alt, label, href }: NavButtonProps) {
             : "hover:bg-gray-100 dark:hover:bg-gray-800"
         )}
       >
-        <Image
-          src={src}
-          alt={alt}
-          width={24}
-          height={24}
-          className="select-none"
+        <div
+          aria-label={label}
+          style={{
+            maskImage: `url(${src})`,
+            WebkitMaskImage: `url(${src}`,
+          }}
+          className={clsx(
+            "w-6 h-6 mask-center mask-contain bg-current",
+            isActive ? "text-blue-600" : "text-gray-500"
+          )}
         />
         <span className="text-xs font-medium">{label}</span>
       </Link>

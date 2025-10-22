@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function TopBanner() {
   return (
-    <header className="sticky top-0 z-10 flex items-center bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 py-3 px-4">
+    <header className="sticky top-0 z-10 flex items-center bg-neutral-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 py-3 px-4">
       <Image
         src="/assets/images/light-logo.svg"
         alt="Light Mode Logo"
