@@ -25,10 +25,10 @@ async function writeNotes(notes: Note[]) {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const notes = await readNotes();
-  const { id } = params;
+  const id = (await params).id;
   const note = notes.find((n: Note) => n.id === id);
 
   if (!note) {
@@ -38,8 +38,11 @@ export async function GET(
   return NextResponse.json({ note });
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id;
   const updatednote = await req.json();
   const notes = await readNotes();
   const idx = notes.findIndex((n: Note) => n.id === id);
@@ -56,9 +59,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = params.id;
+  const id = (await params).id;
   const notes = await readNotes();
   const filtered = notes.filter((n: Note) => n.id !== id);
 
