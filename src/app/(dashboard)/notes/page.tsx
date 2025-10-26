@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useNotes } from "@/features/notes/store/useNotes";
@@ -17,6 +17,11 @@ export default function NotesPage() {
       fetchNotes().catch((err) => console.error("Failed to load notes:", err));
     }
   }, [notes.length, fetchNotes]);
+
+  const nonArchivedNotes = useMemo(
+    () => notes.filter((note) => !note.isArchived),
+    [notes]
+  );
 
   // --- Create a new note and navigate to it --- //
   const handleAddNote = useCallback(async () => {
@@ -63,7 +68,7 @@ export default function NotesPage() {
         <AddNoteButton onClick={handleAddNote} />
       </header>
 
-      <NotesList notes={notes} />
+      <NotesList notes={nonArchivedNotes} />
     </main>
   );
 }

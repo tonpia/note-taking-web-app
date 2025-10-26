@@ -1,11 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-
-import HomeIcon from "@/../public/assets/images/icon-home.svg";
 
 interface NavButtonProps {
   src: string;
